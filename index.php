@@ -1,3 +1,45 @@
+<?php //Login Page 
+
+session_start();
+if(isset($_SESSION["key"])) {
+    header('location: dashboard.php');
+}
+
+include 'conn.php';
+
+if(isset($_POST['try_login'])) {
+    $username = $_POST['username'];
+    $password = md5($_POST['password']);
+
+    // if email is registered
+    $sql = "SELECT * FROM teacher WHERE username = '".$username."'";
+    $query = mysqli_query($conn, $sql);
+    if(mysqli_num_rows($query) > 0) {
+
+        // if email and password is correct
+        $sql = "SELECT * FROM teacher WHERE 
+            username = '".$username."' AND 
+            password='".$password."'";
+
+        $query = mysqli_query($conn, $sql);
+
+        if(mysqli_num_rows($query) > 0) {
+            // if success
+            $row = mysqli_fetch_array($query);
+            $_SESSION["key"] = $row["id"];
+            header('location: dashboard.php');
+        }else {
+            // if failed
+            echo "failed";
+        }
+
+    }else {
+        echo "email does not exists.";
+    }
+}
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,19 +86,39 @@ li a:hover:not(.active) {
   <li><a href="reg.php">Register Student</a></li>
  
 
-  <li style="float:right"><a href="#about">Log-In</a></li>
+  <li style="float:right"><a href="">Log-In</a></li>
 </ul><br><br><br><br>
 <center>
 <h1>Welcome to SMK PARC</h1><br>
 <img src="logoparc.png" witdh="150" height="150"><br>
-<br><form><table border="2">
-<tr><td colspan="2" align="center">LOGIN-IN</td></tr>
-<tr><td><label for="user">Username :</label></td>
-<td><input type="text" id="user" name="user"></td></tr>
-<tr><td><label for="password">Password :</label></td>
-<td><input type="password" id="password" name="password"></td></tr></table><br>
-<input type="button" value="Login">  
+<br>
+
+
+
+
+
+
+
+<html>
+<body>
+    
+
+<br><br><hr>
+
+<form method="post">
+
+Username:
+<input type="text" name="username"><br><br>
+
+Password:
+<input type="password" name="password"><br><br>
+
+<input type="submit" value="LOGIN" name="try_login">
+
 </form>
+
+</body>
+</html>
 </center>
 
 </body>

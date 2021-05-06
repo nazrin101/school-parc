@@ -1,3 +1,41 @@
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "myschool";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+}
+
+if(isset($_POST['registration_form'])) {
+    $name = $_POST["fname"];
+    $email = $_POST["ic"];
+    $email = $_POST["age"];
+    $email = $_POST["gender"];
+    $email = $_POST["class"];
+
+    $SQL = "INSERT INTO teacher (fname, ic, age, gender, class)
+    VALUES ('$fname', '$ic', '$age', '$gender', '$class')";
+
+    $query = mysqli_query($conn, $SQL);
+    if($query) {
+        echo "Success";
+    }else {
+        echo "Failed";
+    }
+
+}
+
+
+$conn->close();
+?>
+
+
+
 <html>
 <head><title>Student Management System</title></head>
 <body bgcolor="#ADD8E6">
@@ -52,39 +90,47 @@ li a:hover:not(.active) {
 <center>
 
 
-<form>
 
-	<table border="3">
-	<tr><td><label for="name">Full Name :</label> </td>
-<td><input type="text" id="name" name="name"></td></tr>
-<tr><td><label for="age">Age :</label> </td>
-<td><input type="text" id="age" name="age"></td></tr>
-<tr><td><label for="ic">I/C Number :</label> </td>
-<td><input type="text" id="ic" name="ic"></td></tr>
-<tr><td>Gender :</td><td> <input type="radio" id="male" name="gender" value="male">
-  <label for="male">Male</label>
-  <input type="radio" id="female" name="gender" value="female">
-  <label for="female">Female</label></td></tr>
-<tr><td><label for="class">Class :</label></td>
-<td>
-<select id="class" name="class">
-  <option value="A">Class A</option>
-  <option value="B">Class B</option>
-  <option value="C">Class C</option>
-  <option value="D">Class D</option>
-</select></td></tr>
 
-<tr><td><label for="fname">Father Name :</label> </td>
-<td><input type="text" id="fname" name="fname"></td></tr>
 
-<tr><td><label for="mname">Mother Name :</label> </td>
-<td><input type="text" id="mname" name="mname"></td></tr>
-<br>
+    
+<hr><br>
+<br><br><hr>
 
-</table><br>
-<input type="button" value="Register"> 
+<form action="insert.php" method="post">
+  <p>
+      <label for="fname">Full Name:</label>
+        <input type="text" name="fname" id="fname"><br>
+    </p>
 
+    <p>
+        <label for="ic">I/C:</label>
+        <input type="number" size="18" id="ic" name="ic">
+    </p>
+    <p>
+      <label for="age">Age:</label>
+     <input type="number" size="18" id="age" name="age">
+    </p>
+
+     <p>
+        <label for="gender">Gender:</label>
+        <input type="radio" name="gender" value="male"> Male
+        <input type="radio" name="gender" value="female"> Female<br>
+    </p>
+
+ <p>
+        <label for="class">Class :</label>
+      
+        <select id="class">
+          <option value="Class A">Class A</option>
+          <option value="Class B">Class B</option>
+          <option value="Class C">Class C</option>
+        </select>
+    </p>
+
+    <input type="submit" value="Add Records">
 </form>
+
 
 </center>
 </body>
